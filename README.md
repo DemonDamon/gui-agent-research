@@ -9,15 +9,15 @@
 
 ### 一、主流开源 GUI Agent 模型调研
 
-| 模型名称 | 开发者 | 参数规模 | 核心特点 | 调研报告 |
-|---------|--------|---------|---------|---------|
-| **UI-TARS-7B** | 字节跳动 | 7B | 原生GUI智能体架构，端到端设计 | [查看报告](./researches/UI-TARS-7B/README.md) |
-| **GELab-Zero** | 阶跃星辰 | 4B | 端侧轻量模型，隐私保护 | [查看报告](./researches/GELab-Zero/README.md) |
-| **MAI-UI** | 阿里通义 | 2B-235B | 全尺寸端云协同 | [查看报告](./researches/MAI-UI/README.md) |
-| **AgentCPM-GUI** | 清华THUNLP | 8B | 中文应用适配，精准定位 | [查看报告](./researches/AgentCPM-GUI/README.md) |
-| **AutoGLM** | 智谱AI | 9B | 手机端助手框架，MIT协议 | [查看报告](./researches/AutoGLM-Phone-9B/README.md) |
-| **GUI-Owl** | 阿里通义 | 32B | 端到端多模态，全场景支持 | [查看报告](./researches/GUI-Owl/README.md) |
-| **Step-GUIEdge** | 阶跃星辰 | 4B/8B | 首个支持手机部署的端侧模型 | [查看报告](./researches/Step-GUIEdge/README.md) |
+| 模型名称 | 开发者 | 参数规模 | 核心特点 | 调研报告 | 代码解构 |
+|---------|--------|---------|---------|---------|---------|
+| **UI-TARS-7B** | 字节跳动 | 7B | 原生GUI智能体架构，端到端设计 | [查看报告](./researches/UI-TARS-7B/README.md) | [代码分析](./researches/UI-TARS-7B/code-analysis.md) |
+| **GELab-Zero** | 阶跃星辰 | 4B | 端侧轻量模型，隐私保护 | [查看报告](./researches/GELab-Zero/README.md) | [代码分析](./researches/GELab-Zero/code-analysis.md) |
+| **MAI-UI** | 阿里通义 | 2B-235B | 全尺寸端云协同 | [查看报告](./researches/MAI-UI/README.md) | [代码分析](./researches/MAI-UI/code-analysis.md) |
+| **AgentCPM-GUI** | 清华THUNLP | 8B | 中文应用适配，精准定位 | [查看报告](./researches/AgentCPM-GUI/README.md) | [代码分析](./researches/AgentCPM-GUI/code-analysis.md) |
+| **AutoGLM** | 智谱AI | 9B | 手机端助手框架，MIT协议 | [查看报告](./researches/AutoGLM-Phone-9B/README.md) | [代码分析](./researches/autoglm/06-source-code-analysis.md) |
+| **GUI-Owl** | 阿里通义 | 32B | 端到端多模态，全场景支持 | [查看报告](./researches/GUI-Owl/README.md) | [代码分析](./researches/GUI-Owl/code-analysis.md) |
+| **Step-GUIEdge** | 阶跃星辰 | 4B/8B | 首个支持手机部署的端侧模型 | [查看报告](./researches/Step-GUIEdge/README.md) | [代码分析](./researches/Step-GUIEdge/code-analysis.md) |
 
 ### 二、专题深度调研
 
@@ -42,7 +42,27 @@
 #### 横向对比分析
 - [AutoGLM vs 豆包手机 综合对比](./researches/comparison/00-comprehensive-comparison.md)
 
-### 三、技术演示 PPT
+### 三、深度代码解构（DeepWiki 风格）
+
+本项目对所有有开源代码的 GUI Agent 模型进行了类似 DeepWiki 的深度代码解构，包括：
+
+- **项目结构分析**：完整的目录结构和模块划分
+- **核心模块解读**：关键代码文件的详细注释
+- **架构设计解析**：系统架构图和数据流图
+- **API 接口文档**：动作空间和调用方式
+- **使用示例**：快速开始和部署指南
+
+| 模型 | GitHub 仓库 | 代码解构文档 |
+|-----|------------|-------------|
+| UI-TARS | [bytedance/UI-TARS](https://github.com/bytedance/UI-TARS) | [code-analysis.md](./researches/UI-TARS-7B/code-analysis.md) |
+| GELab-Zero | [stepfun-ai/gelab-zero](https://github.com/stepfun-ai/gelab-zero) | [code-analysis.md](./researches/GELab-Zero/code-analysis.md) |
+| MAI-UI | [Tongyi-MAI/MAI-UI](https://github.com/Tongyi-MAI/MAI-UI) | [code-analysis.md](./researches/MAI-UI/code-analysis.md) |
+| AgentCPM-GUI | [OpenBMB/AgentCPM-GUI](https://github.com/OpenBMB/AgentCPM-GUI) | [code-analysis.md](./researches/AgentCPM-GUI/code-analysis.md) |
+| AutoGLM | [zai-org/Open-AutoGLM](https://github.com/zai-org/Open-AutoGLM) | [06-source-code-analysis.md](./researches/autoglm/06-source-code-analysis.md) |
+| GUI-Owl | [X-PLUG/MobileAgent](https://github.com/X-PLUG/MobileAgent) | [code-analysis.md](./researches/GUI-Owl/code-analysis.md) |
+| Step-GUIEdge | [stepfun-ai/gelab-zero](https://github.com/stepfun-ai/gelab-zero) | [code-analysis.md](./researches/Step-GUIEdge/code-analysis.md) |
+
+### 四、技术演示 PPT
 
 本仓库还包含一份 28 页的技术演示 PPT，主题为"GUI 自主智能体技术深度调研"，采用国际化科技风格设计。
 
@@ -55,23 +75,51 @@ gui-agent-research/
 ├── README.md                    # 本文件
 ├── researches/                  # 调研报告目录
 │   ├── UI-TARS-7B/             # UI-TARS-7B 模型调研
-│   │   ├── README.md
+│   │   ├── README.md           # 调研报告
+│   │   ├── code-analysis.md    # 深度代码解构
 │   │   └── images/
 │   ├── GELab-Zero/             # GELab-Zero 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
 │   ├── MAI-UI/                 # MAI-UI 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
 │   ├── AgentCPM-GUI/           # AgentCPM-GUI 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
 │   ├── AutoGLM-Phone-9B/       # AutoGLM 模型调研
+│   │   └── README.md
 │   ├── GUI-Owl/                # GUI-Owl 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
 │   ├── Step-GUIEdge/           # Step-GUIEdge 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
 │   ├── autoglm/                # AutoGLM 专题深度调研
 │   │   ├── 01-overview.md
-│   │   ├── ...
+│   │   ├── 02-architecture.md
+│   │   ├── 03-tech-stack.md
+│   │   ├── 04-multimodal-model.md
+│   │   ├── 05-planning-algorithm.md
+│   │   ├── 06-source-code-analysis.md
+│   │   ├── 07-api-design.md
+│   │   ├── 08-performance-metrics.md
 │   │   └── diagrams/           # Mermaid 架构图
 │   ├── doubao/                 # 豆包手机专题深度调研
 │   │   ├── 01-product-overview.md
-│   │   ├── ...
+│   │   ├── 02-hardware-integration.md
+│   │   ├── 03-end-side-ai.md
+│   │   ├── 04-cloud-collaboration.md
+│   │   ├── 05-zte-contribution.md
+│   │   ├── 06-comparison-with-autoglm.md
 │   │   └── diagrams/
 │   └── comparison/             # 横向对比分析
+│       └── 00-comprehensive-comparison.md
 ├── presentation/               # 技术演示 PPT
 │   ├── slides/                 # HTML 幻灯片
 │   └── *.png                   # 架构图素材
@@ -99,6 +147,18 @@ gui-agent-research/
 | AgentCPM-GUI | - | 90.2% (AC-Low) | - |
 | GUI-Owl-32B | 68.2% | 59.7% | 24.5% |
 
+### 代码架构特点总结
+
+| 模型 | 架构模式 | 核心特点 |
+|-----|---------|---------|
+| UI-TARS | 单模型端到端 | 统一动作空间，坐标归一化 |
+| GELab-Zero | MCP 协议 | GUI-MCP 标准化接口 |
+| MAI-UI | 记忆增强 | 统一记忆模块，自进化数据管线 |
+| AgentCPM-GUI | Schema 驱动 | JSON Schema 动作定义 |
+| AutoGLM | 模块化 | 感知-规划-执行分离 |
+| GUI-Owl | 多智能体 | Manager-Executor-Notetaker-Reflector |
+| Step-GUIEdge | 端侧优化 | 轻量化，隐私保护 |
+
 ## 📖 参考文献
 
 1. [UI-TARS: Pioneering Automated GUI Interaction with Native Agents](https://arxiv.org/abs/2501.12326)
@@ -107,6 +167,7 @@ gui-agent-research/
 4. [AgentCPM-GUI: Building Mobile-Use Agents with Reinforcement Fine-Tuning](https://arxiv.org/abs/2506.01391)
 5. [Step-GUI Technical Report](https://arxiv.org/abs/2512.15431)
 6. [GUI-Owl: Advancing Native GUI Agents with Unified Action Modeling](https://arxiv.org/abs/2507.00076)
+7. [Mobile-Agent-v3: Foundational Agents for GUI Automation](https://arxiv.org/abs/2508.15144)
 
 ## 📜 许可证
 
