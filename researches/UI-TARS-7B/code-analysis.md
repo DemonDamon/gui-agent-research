@@ -1,7 +1,7 @@
 # UI-TARS 深度代码解构
 
 > **作者**: Damon Li  
-> **更新日期**: 2025年1月  
+> **更新日期**: 2026年1月  
 > **源码仓库**: [bytedance/UI-TARS](https://github.com/bytedance/UI-TARS)
 
 ## 一、项目概览

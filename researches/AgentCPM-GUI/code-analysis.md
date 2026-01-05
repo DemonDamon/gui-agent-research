@@ -1,7 +1,7 @@
 # AgentCPM-GUI 深度代码解构
 
 > **作者**: Damon Li  
-> **更新日期**: 2025年1月  
+> **更新日期**: 2026年1月  
 > **源码仓库**: [OpenBMB/AgentCPM-GUI](https://github.com/OpenBMB/AgentCPM-GUI)
 
 ## 一、项目概览
