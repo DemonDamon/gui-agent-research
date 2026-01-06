@@ -34,7 +34,7 @@
 
 **OSWorld** 是一个可扩展的、真实的计算机操作环境，用于评测多模态智能体在开放式任务中的表现。它支持在主流操作系统（Ubuntu, Windows, macOS）的虚拟机中执行 369 个真实世界的任务。
 
-![OSWorld 架构图](https://github.com/xlang-ai/OSWorld/raw/main/assets/OSWorld.png)
+![OSWorld 架构图](https://os-world.github.io/static/images/env.png)
 
 **核心特性**：
 
@@ -58,7 +58,7 @@
 | ScreenSpot | 包含来自 iOS, Android, macOS, Windows 和 Web 的 1200+ 条指令 |
 | ScreenSpot-Pro | 专注于专业、高分辨率的桌面 GUI，包含 1581 条指令，界面元素更小、更密集 |
 
-![ScreenSpot-Pro 示例](https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding/raw/main/assets/teaser.png)
+![ScreenSpot-Pro 示例](https://gui-agent.github.io/grounding-leaderboard/logo.png)
 
 > **来源**: [ScreenSpot-Pro: GUI Grounding for Professional High-Resolution Computer Use](https://arxiv.org/abs/2504.07981)
 
