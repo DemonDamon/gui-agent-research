@@ -19,6 +19,7 @@
 | **GUI-Owl** | 阿里通义 | 32B | 端到端多模态，全场景支持 | [查看报告](./researches/GUI-Owl/README.md) | [代码分析](./researches/GUI-Owl/code-analysis.md) |
 | **Step-GUIEdge** | 阶跃星辰 | 4B/8B | 首个支持手机部署的端侧模型 | [查看报告](./researches/Step-GUIEdge/README.md) | [代码分析](./researches/Step-GUIEdge/code-analysis.md) |
 | **Mobile-Agent** | 阿里通义 | 7B/32B | 多智能体协作框架，跨平台支持 | [查看报告](./researches/Mobile-Agent/README.md) | [代码分析](./researches/Mobile-Agent/code-analysis.md) |
+| **MobiAgent** | 上海交大IPADS | 4B-8B | 可定制移动智能体系统，AgentRR加速 | [查看报告](./researches/MobiAgent/README.md) | [代码分析](./researches/MobiAgent/code-analysis.md) |
 
 ### 二、专题深度调研
 
@@ -62,6 +63,7 @@
 | AutoGLM | [zai-org/Open-AutoGLM](https://github.com/zai-org/Open-AutoGLM) | [06-source-code-analysis.md](./researches/autoglm/06-source-code-analysis.md) |
 | GUI-Owl | [X-PLUG/MobileAgent](https://github.com/X-PLUG/MobileAgent) | [code-analysis.md](./researches/GUI-Owl/code-analysis.md) |
 | Step-GUIEdge | [stepfun-ai/gelab-zero](https://github.com/stepfun-ai/gelab-zero) | [code-analysis.md](./researches/Step-GUIEdge/code-analysis.md) |
+| MobiAgent | [IPADS-SAI/MobiAgent](https://github.com/IPADS-SAI/MobiAgent) | [code-analysis.md](./researches/MobiAgent/code-analysis.md) |
 
 ### 四、技术演示 PPT
 
@@ -98,6 +100,10 @@ gui-agent-research/
 │   │   ├── code-analysis.md
 │   │   └── images/
 │   ├── Step-GUIEdge/           # Step-GUIEdge 模型调研
+│   │   ├── README.md
+│   │   ├── code-analysis.md
+│   │   └── images/
+│   ├── MobiAgent/              # MobiAgent 模型调研
 │   │   ├── README.md
 │   │   ├── code-analysis.md
 │   │   └── images/
@@ -159,6 +165,7 @@ gui-agent-research/
 | AutoGLM | 模块化 | 感知-规划-执行分离 |
 | GUI-Owl | 多智能体 | Manager-Executor-Notetaker-Reflector |
 | Step-GUIEdge | 端侧优化 | 轻量化，隐私保护 |
+| MobiAgent | 多智能体+缓存 | AgentRR 加速，DAG 评测 |
 
 ## 📖 参考文献
 
