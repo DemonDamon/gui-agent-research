@@ -72,7 +72,17 @@ MAI-UI 在多个主流的 GUI 基础能力和导航能力基准上取得了业�
 2.  **对新应用的泛化能力**: 尽管模型在多个开源应用上表现优异，但对于未在训练数据中出现过的、全新的商业闭源应用的泛化能力仍有待进一步验证。
 3.  **长时程任务的稳定性**: 与所有自主代理一样，在执行需要非常多步骤的超长时程任务时，可能会面临稳定性和任务漂移的挑战。
 
-## 8. 相关图片 URL
+## 8. 更多深度文档
+
+本目录下还包含以下深度调研文档：
+
+| 文档名称 | 描述 |
+| --- | --- |
+| [code-analysis.md](./code-analysis.md) | MAI-UI 深度代码解构，分析核心模块和源码实现 |
+| [model-features.md](./model-features.md) | MAI-UI 模型层面特点深度分析，包括全尺寸模型家族、自进化数据管线、在线强化学习框架等 |
+| [deployment-guide.md](./deployment-guide.md) | MAI-UI 工程化部署全流程指南，从环境准备到客户端集成 |
+
+## 9. 相关图片 URL
 
 *   性能对比图: [https://tongyi-mai.github.io/MAI-UI/main_results.png](https://tongyi-mai.github.io/MAI-UI/main_results.png)
 *   数据管线图: [https://tongyi-mai.github.io/MAI-UI/gui_grounding_data.png](https://tongyi-mai.github.io/MAI-UI/gui_grounding_data.png)
