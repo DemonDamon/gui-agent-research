@@ -9,16 +9,18 @@
 
 ### 一、主流开源 GUI Agent 方案对比
 
-| 方案 | 开发者 | 核心优势 | 核心劣势 | 基础模型 | 训练数据 | 训练方法 | 模型尺寸 |
+| 方案/模型 | 开发者 | 核心优势 | 核心劣势 | 基础模型 | 训练数据 | 训练方法 | 模型尺寸 |
 |---|---|---|---|---|---|---|---|
 | **UI-TARS** | 字节跳动 | 单模型端到端，性能高 | 依赖自建数据集，复现难 | Qwen2-VL-7B | 自建 GUI 数据集 | SFT | 7B |
 | **GELab-Zero** | 阶跃星辰 | 零样本，无需训练，隐私保护 | 性能依赖基础模型 | Qwen3-VL-4B | 无需训练 | 零样本 | 4B |
 | **MAI-UI** | 阿里通义 | 全尺寸端云协同，自进化数据管线 | 架构复杂，部署成本高 | Qwen2.5-VL | 自建+在线 RL | SFT + RL | 2B/8B/32B/235B |
 | **AgentCPM-GUI** | 清华+面壁 | 中文应用适配好，强化微调 | 依赖特定数据集 | MiniCPM-V | CAGUI (自建) | SFT + RFT | 8B |
 | **AutoGLM** | 智谱 AI | 模块化，易于扩展，MIT 协议 | 性能非最优 | GLM-4V | 自建+RL | SFT + RL | 9B |
-| **GUI-Owl** | 阿里通义 | 多智能体协作，错误恢复能力强 | 框架较重 | Qwen2.5-VL | 自建 GUI 数据集 | SFT | 7B/32B |
+| **GUI-Owl** | 阿里通义 | 强大的视觉语言模型 | 依赖 Mobile-Agent-v3 框架 | Qwen2.5-VL | 自建 GUI 数据集 | SFT | 7B/32B |
 | **Step-GUIEdge** | 阶跃星辰 | 端侧部署，轻量化 | 性能受限 | Step-1.5V | 自建数据集 | SFT | 4B/8B |
 | **MobiAgent** | 上交 IPADS | AgentRR 加速，可定制性强 | 依赖多个组件 | Qwen2.5-VL | MobiMind (自建) | SFT | 4B/7B/8B |
+
+**注**：**Mobile-Agent-v3** 是一个多智能体**框架**，它使用 **GUI-Owl** 作为其核心**模型**。因此，在选型时，应将两者视为一个整体方案。
 
 ### 二、性能评测对比
 
@@ -32,16 +34,15 @@
 
 ### 三、专题深度调研
 
-| 模型名称 | 调研报告 | 代码解构 |
+| 模型/框架名称 | 调研报告 | 代码解构 |
 |---|---|---|
 | **UI-TARS-7B** | [查看报告](./researches/UI-TARS-7B/README.md) | [代码分析](./researches/UI-TARS-7B/code-analysis.md) |
 | **GELab-Zero** | [查看报告](./researches/GELab-Zero/README.md) | [代码分析](./researches/GELab-Zero/code-analysis.md) |
 | **MAI-UI** | [查看报告](./researches/MAI-UI/README.md) | [代码分析](./researches/MAI-UI/code-analysis.md) |
 | **AgentCPM-GUI** | [查看报告](./researches/AgentCPM-GUI/README.md) | [代码分析](./researches/AgentCPM-GUI/code-analysis.md) |
 | **AutoGLM** | [查看报告](./researches/AutoGLM-Phone-9B/README.md) | [代码分析](./researches/autoglm/06-source-code-analysis.md) |
-| **GUI-Owl** | [查看报告](./researches/GUI-Owl/README.md) | [代码分析](./researches/GUI-Owl/code-analysis.md) |
+| **GUI-Owl & Mobile-Agent-v3** | [查看报告](./researches/Mobile-Agent/README.md) | [代码分析](./researches/Mobile-Agent/code-analysis.md) |
 | **Step-GUIEdge** | [查看报告](./researches/Step-GUIEdge/README.md) | [代码分析](./researches/Step-GUIEdge/code-analysis.md) |
-| **Mobile-Agent** | [查看报告](./researches/Mobile-Agent/README.md) | [代码分析](./researches/Mobile-Agent/code-analysis.md) |
 | **MobiAgent** | [查看报告](./researches/MobiAgent/README.md) | [代码分析](./researches/MobiAgent/code-analysis.md) |
 
 ## 🏗️ 项目结构
@@ -55,7 +56,7 @@ gui-agent-research/
 │   ├── MAI-UI/                 # MAI-UI 模型调研
 │   ├── AgentCPM-GUI/           # AgentCPM-GUI 模型调研
 │   ├── AutoGLM-Phone-9B/       # AutoGLM 模型调研
-│   ├── GUI-Owl/                # GUI-Owl 模型调研
+│   ├── Mobile-Agent/           # GUI-Owl & Mobile-Agent-v3 调研
 │   ├── Step-GUIEdge/           # Step-GUIEdge 模型调研
 │   ├── MobiAgent/              # MobiAgent 模型调研
 │   └── ...
@@ -99,7 +100,7 @@ gui-agent-research/
 | **追求极致性能，预算充足** | **MAI-UI (235B)** | 业界 SOTA，性能最强，但成本最高。 |
 | **中文应用自动化，成功率优先** | **AgentCPM-GUI** | 专门针对中文应用优化，评测分数高。 |
 | **需要端侧部署，保护隐私** | **Step-GUIEdge / GELab-Zero** | 轻量化模型，可在本地运行，无需数据上云。 |
-| **需要灵活定制和二次开发** | **MobiAgent / Mobile-Agent** | 模块化、可定制的框架，适合有研发能力的团队。 |
+| **需要灵活定制和二次开发** | **MobiAgent / Mobile-Agent-v3** | 模块化、可定制的框架，适合有研发能力的团队。 |
 | **希望快速验证，开箱即用** | **AutoGLM** | MIT 协议，提供完整的手机端 Demo，上手快。 |
 | **性能与成本均衡** | **MAI-UI (8B) / UI-TARS (7B)** | 性能接近大模型，但推理成本更低，是性价比较高的选择。 |
 
