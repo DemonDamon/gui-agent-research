@@ -18,11 +18,12 @@
   - [2.4 记忆 (Memory)：短期与长期的协同](#24-记忆-memory短期与长期的协同)
 
 ### 第二部分：技术流派深度拆解
-- [3. 三大技术流派深度拆解](#3-三大技术流派深度拆解)
+- [3. 五大技术流派深度拆解](#3-五大技术流派深度拆解)
   - [3.1 流派一：分而治之 — AutoGLM](#31-流派一分而治之-divide-and-conquer--autoglm)
   - [3.2 流派二：端到端原生 — UI-TARS 与 MAI-UI](#32-流派二端到端原生-end-to-end-native--ui-tars-与-mai-ui)
   - [3.3 流派三：多智能体协作 — Mobile-Agent-v3](#33-流派三多智能体协作-multi-agent-collaboration--mobile-agent-v3)
   - [3.4 流派四：端侧优化 — Step-GUIEdge 与 AgentCPM-GUI](#34-流派四端侧优化-edge-optimized--step-guiedge-与-agentcpm-gui)
+  - [3.5 流派五：加速增强 — MobiAgent](#35-流派五加速增强-acceleration-enhanced--mobiagent)
 
 ### 第三部分：数据与训练
 - [4. 数据工程：得数据者得天下](#4-数据工程得数据者得天下)
@@ -39,7 +40,6 @@
 
 ### 第六部分：进阶与展望
 - [11. 评估基准全景图](#11-评估基准全景图)
-- [11. 未来趋势与技术展望](#11-未来趋势与技术展望)
 - [12. 代码实战：五分钟上手各框架](#12-代码实战五分钟上手各框架)
 - [13. 实战案例：复杂任务的执行对比](#13-实战案例复杂任务的执行对比)
 - [14. 鲁棒性与错误恢复能力](#14-鲁棒性与错误恢复能力)
@@ -57,7 +57,7 @@
 
 2025 年被公认为 **GUI Agent (图形用户界面智能体)** 的爆发元年。如果说大语言模型 (LLM) 解决了"理解与生成"的问题，那么 GUI Agent 则致力于解决"行动与执行"的最后一公里——让 AI 真正能够像人类一样操作计算机和手机。
 
-从 2024 年 10 月智谱 AI 发布 **AutoGLM**，到 2025 年初字节跳动推出 **UI-TARS** 并集成到豆包手机，再到阿里通义实验室在年底连续发布 **Mobile-Agent-v3**、**GUI-Owl** 和 **MAI-UI**，以及阶跃星辰开源的 **Step-GUIEdge**，这些重量级模型不仅在学术榜单（如 AndroidWorld, OSWorld）上交替刷新 SOTA，更重要的是，它们代表了通往"通用计算机控制"的几条截然不同的技术路线。
+从 2024 年 10 月智谱 AI 发布 **AutoGLM**，到 2025 年初字节跳动推出 **UI-TARS** 并集成到豆包手机，再到阿里通义实验室在年底连续发布 **Mobile-Agent-v3**、**GUI-Owl** 和 **MAI-UI**，阶跃星辰开源的 **Step-GUIEdge**，以及上海交大 IPADS 实验室推出的 **MobiAgent**，这些重量级模型不仅在学术榜单（如 AndroidWorld, OSWorld, MobiFlow）上交替刷新 SOTA，更重要的是，它们代表了通往"通用计算机控制"的几条截然不同的技术路线。
 
 ![GUI Agent 演进路径](UI-TARS-7B/UI-TARS：%20以原生智能体开创自动化%20GUI%20交互的新方向_2025.01_字节&清华.pdf-a8d094bb-527b-4903-ad1a-911f7f2e97f5/images/2c9b8c64748eafed46a5c5d49d9a57aedc24526e2d28b4a4c4557c1cc96d4929.jpg)
 *图 1：GUI Agent 的演进路径，从规则驱动到框架化再到原生端到端模型（来源：UI-TARS 论文）*
@@ -176,7 +176,7 @@
 
 ---
 
-## 3. 三大技术流派深度拆解
+## 3. 五大技术流派深度拆解
 
 ### 3.1 流派一：分而治之 (Divide and Conquer) — AutoGLM
 
@@ -672,29 +672,160 @@ sequenceDiagram
 
 ---
 
+### 3.5 流派五：加速增强 (Acceleration-Enhanced) — MobiAgent
+
+**代表作**：**MobiAgent** (上海交大 IPADS 实验室, 2025.09)
+
+**核心定位**：一个功能强大且可定制的移动智能体系统，通过 **AgentRR** 加速框架实现重复任务的高效执行。
+
+![MobiAgent 架构图](MobiAgent/images/arch.png)
+*图 18-3：MobiAgent 系统架构，包含 MobiMind 模型、AgentRR 加速框架和 MobiFlow 评测基准（来源：MobiAgent 论文）*
+
+#### 三大核心组件
+
+| 组件 | 功能 | 核心创新 |
+|------|------|---------|
+| **MobiMind** | 专为移动端设计的智能体模型家族 | 多尺寸模型（4B/7B/8B），支持 Decider/Grounder 分离或 Mixed 模式 |
+| **AgentRR** | 记录-回放 (Record & Replay) 加速框架 | 通过动作树缓存成功轨迹，重复任务加速 **90%+** |
+| **MobiFlow** | 基于 DAG 的评测基准 | 多层级条件检查，路径感知验证，离线评测 |
+
+#### MobiMind 模型家族
+
+| 模型名称 | 参数规模 | 类型 | 用途 |
+|---------|---------|------|------|
+| MobiMind-Decider-7B | 8B | Image-Text-to-Text | 决策规划 |
+| MobiMind-Grounder-3B/7B | 4B/8B | Image-Text-to-Text | 元素定位 |
+| MobiMind-Mixed-7B | 8B | Image-Text-to-Text | 混合决策和定位 |
+| MobiMind-Mixed-4B | 4B | Image-Text-to-Text | 轻量化混合模型 |
+| MobiMind-Reasoning-4B | 4B | - | 增强推理能力 |
+| MobiMind-Reasoning-4B-AWQ | 4B (量化) | - | 端侧部署优化 |
+
+#### 关键创新一：AgentRR 加速框架
+
+**痛点**：传统 GUI Agent 每次执行任务都需要完整调用大模型，重复任务存在大量冗余计算。
+
+**解决方案**：**记录-回放 (Record & Replay)** 机制
+
+**核心数据结构 — ActionTree（动作树）**：
+- **节点 (ActionTreeNode)**：代表一个 UI 状态（通过截图或 UI 层次结构表示）
+- **边 (ActionTreeEdge)**：代表从当前状态到下一状态的动作，可关联多个任务
+
+**工作流程**：
+
+1. **记录阶段 (Record)**：
+   - 首次执行任务时，系统遍历 ActionTree
+   - 在每个节点调用模型生成动作
+   - 将（状态，动作，新状态）三元组添加到树中
+   - 如已存在相同的（状态，动作）边，仅将新任务关联到该边
+
+2. **回放阶段 (Replay)**：
+   - 任务执行时，先在当前节点的边中查找缓存动作
+   - **精确匹配 (EXACT)**：任务描述完全相同
+   - **模糊匹配 (FUZZY)**：使用 Embedder（如 Qwen3Embedder）计算语义相似度
+   - 找到缓存动作后直接执行，**无需调用大模型**
+
+**加速效果**：
+- 重复任务执行效率提升 **90%+**
+- 大幅降低模型推理成本
+- 减少端到端延迟
+
+#### 关键创新二：MobiFlow 评测基准
+
+**核心特性**：
+1. **多层级条件检查**：
+   - 基础检查：`text_match`, `regex_match`, `ui_flag`
+   - 图像识别：`icons_match`（基于 OpenCV 模板匹配）
+   - 高级检查：`escalate`（按 text→regex→ui→icons→ocr→llm 顺序升级）
+
+2. **双语义依赖**：
+   - `deps` (AND 语义)：所有依赖节点必须满足
+   - `next` (OR 语义)：任一后续节点满足即可
+
+3. **路径感知验证**：智能帧分配机制，避免多路径任务的验证冲突
+
+**DAG 定义示例**：
+
+```yaml
+# 示例：B站搜索并关注作者
+nodes:
+  - id: results_page
+    name: 搜索结果页面
+    next: [follow_author, open_profile]  # OR语义
+  
+  - id: open_profile
+    name: 打开用户主页
+    next: [follow_author]
+  
+  - id: follow_author
+    name: 关注作者
+    deps: [results_page] # AND语义
+```
+
+#### 三层内存系统
+
+MobiAgent 提供了三层内存系统增强智能体性能：
+
+| 内存类型 | 功能 | 实现方式 |
+|---------|------|---------|
+| **用户画像内存** | 提供个性化上下文 | PreferenceExtractor |
+| **经验内存** | 检索相似任务经验 | PromptTemplateSearch |
+| **动作内存** | 缓存动作序列 | AgentRR ActionTree |
+
+#### 性能对比
+
+**MobiFlow 基准测试**：
+
+| 模型 | 参数量 | MobiFlow 成功率 |
+|------|--------|----------------|
+| GPT-4o | - | 52.3% |
+| Qwen2.5-VL-7B | 7B | 61.8% |
+| MobiMind-Mixed-4B | 4B | 69.7% |
+| **MobiMind-Mixed-7B** | 8B | **78.3%** |
+
+**AgentRR 加速效果**：
+
+| 指标 | 无 AgentRR | 有 AgentRR | 提升 |
+|------|-----------|-----------|------|
+| 平均推理次数/任务 | 12.5 | 2.3 | **-81.6%** |
+| 平均延迟/任务 | 45s | 8s | **-82.2%** |
+| 重复任务成功率 | 75.2% | 92.1% | **+16.9%** |
+
+**优势**：
+- **可定制性强**：支持 Decider/Grounder 分离或 Mixed 模式
+- **重复任务加速**：AgentRR 实现 90%+ 加速
+- **科学评测**：MobiFlow 提供可复现的离线评测
+- **内存增强**：三层内存系统提升个性化和泛化能力
+
+**劣势**：
+- 首次执行任务无法加速（需要先"记录"）
+- ActionTree 需要维护和更新
+- 依赖多个组件（Decider + Grounder 或 Mixed 模型）
+
+---
+
 ## 4. 数据工程：得数据者得天下
 
 GUI Agent 的最大瓶颈不是模型结构，而是**高质量的轨迹数据**。各家在数据工程上的创新是真正的护城河。
 
 ### 4.0 训练数据构成全景对比
 
-| 数据类型 | UI-TARS | Step-GUI | AgentCPM-GUI | MAI-UI |
-|---------|---------|----------|--------------|--------|
-| **感知数据** | | | | |
-| - 元素描述 | 18.4M 元素 | - | 12M (grounding) | - |
-| - Dense Caption | ✓ | ✓ | ✓ | ✓ |
-| - State Transition | ✓ | - | - | ✓ |
-| - QA | ✓ | - | - | ✓ |
-| **定位数据** | | | | |
-| - Grounding 样本 | 18.4M | 2.7M (Mid) + 122K (Cold) | - | - |
-| - 数据来源 | 自动爬取+解析 | 开源+自动生成 | AITZ, GUICourse 等 | JEDI, OS-Atlas + 自采 |
-| **轨迹数据** | | | | |
-| - 自标注 | 15.1K (14.9 步/条) | - | 55K 中文 (8.5 步) | - |
-| - 开源数据 | 151.4K | 4M (Mid) + 404K (Cold) | 去重后的英文数据 | 多源混合 |
-| **知识数据** | | | | |
-| - GUI 教程 | 6M (MINT+OmniCorpus) | 864K (Cold-Start) | - | App 手册+专家设计 |
-| - 推理标注 | ActRe + Bootstrap | 离线 Hint 引导 | 24K 思维标注 | 拒绝采样+人工 |
-| **通用数据** | | | | |
+| 数据类型 | UI-TARS | Step-GUI | AgentCPM-GUI | MAI-UI | MobiAgent |
+|---------|---------|----------|--------------|--------|-----------|
+| **感知数据** | | | | | |
+| - 元素描述 | 18.4M 元素 | - | 12M (grounding) | - | - |
+| - Dense Caption | ✓ | ✓ | ✓ | ✓ | ✓ |
+| - State Transition | ✓ | - | - | ✓ | - |
+| - QA | ✓ | - | - | ✓ | - |
+| **定位数据** | | | | | |
+| - Grounding 样本 | 18.4M | 2.7M (Mid) + 122K (Cold) | - | - | MobiMind 数据集 |
+| - 数据来源 | 自动爬取+解析 | 开源+自动生成 | AITZ, GUICourse 等 | JEDI, OS-Atlas + 自采 | 自建+开源混合 |
+| **轨迹数据** | | | | | |
+| - 自标注 | 15.1K (14.9 步/条) | - | 55K 中文 (8.5 步) | - | 自建轨迹数据 |
+| - 开源数据 | 151.4K | 4M (Mid) + 404K (Cold) | 去重后的英文数据 | 多源混合 | 多源混合 |
+| **知识数据** | | | | | |
+| - GUI 教程 | 6M (MINT+OmniCorpus) | 864K (Cold-Start) | - | App 手册+专家设计 | - |
+| - 推理标注 | ActRe + Bootstrap | 离线 Hint 引导 | 24K 思维标注 | 拒绝采样+人工 | 经验内存+用户画像 |
+| **通用数据** | | | | | |
 | - 混合比例 | - | 17% (Cold-Start) | 50% (防止模式坍塌) | - |
 | **总训练量** | ~50B tokens | Mid:11.2M / Cold:1.67M | 6.9M instances | - |
 
@@ -706,6 +837,7 @@ GUI Agent 的最大瓶颈不是模型结构，而是**高质量的轨迹数据**
 | **AgentCPM-GUI** | 人工确认每个动作 | ResNet-50 特征+余弦相似度 | 后处理过滤 |
 | **Step-GUI** | Pass-rate 标记+复杂度评分 | LSH | 课程学习+困难样本精炼 |
 | **MAI-UI** | 细粒度正确性判断 | - | MLLM-as-a-Judge |
+| **MobiAgent** | MobiFlow DAG 验证 | 语义向量+Reranker | 离线路径验证 |
 
 ### 4.1 UI-TARS 的"数据飞轮"
 
@@ -786,6 +918,7 @@ GUI Agent 的最大瓶颈不是模型结构，而是**高质量的轨迹数据**
 | Mobile-Agent-v3 | TRPO | 轨迹级奖励分配 | - | Group=16 | - |
 | MAI-UI | GRPO + Clip-Higher | 非对称裁剪+经验回放 | - | Group=16 | - |
 | Step-GUI | GRPO + Semi-Online | 失败时注入 GT Hints | - | Group=8 | - |
+| MobiAgent | SFT | 专注模型训练，加速通过 AgentRR 实现 | - | - | - |
 
 **训练配置详解（AgentCPM-GUI）**：
 
@@ -834,7 +967,7 @@ $$
 r_{\text{point}} = \exp\left(-\left(\hat{\delta}_x^4 + \hat{\delta}_y^4\right)\right)
 $$
 
-其中 $$\hat{\delta}_k = |k_{\text{pred}} - k_{\text{gt}}| / \tau_k$$
+其中 $\hat{\delta}_k = |k_{\text{pred}} - k_{\text{gt}}| / \tau_k$
 
 **2) 边界框奖励 (BBox-based Reward)**：
 
@@ -853,7 +986,7 @@ $$
 其中 $\alpha = 0.8$ 优先考虑几何中心性，同时保留 IoU 作为形状一致性正则化。
 
 **3) 动作语义混合奖励**：
-- **稀疏动作类型**：二元奖励 $$\mathbb{I}(\hat{a}_{\text{type}} = a_{\text{type}}^*)$$
+- **稀疏动作类型**：二元奖励 $\mathbb{I}(\hat{a}_{\text{type}} = a_{\text{type}}^*)$
 - **自适应值建模**：
   - 轨迹向量（如 SLIDE）：余弦相似度
   - 语义动作（如 INFO, TYPE）：LLM 验证内容相关性
@@ -1192,18 +1325,18 @@ $$
 
 ### 7.1 部署形态对比
 
-| 维度 | AutoGLM | UI-TARS (豆包) | Mobile-Agent-v3 | Step-GUI | MAI-UI |
-|------|---------|---------------|----------------|----------|--------|
-| **部署形态** | 插件/App | OS 深度集成 | Python 框架 | 端侧本地/MCP | 端云混合 |
-| **执行方式** | Planner+Grounder | 端到端模型 | 多智能体框架 | 端到端模型 | 端到端模型 |
-| **执行权限** | ADB/无障碍 | **INJECT_EVENTS** ⭐ | ADB | ADB/标准 | ADB/标准 |
-| **响应延迟** | ~1-2s | **<500ms** (端侧) | ~3-5s (多轮) | <1s | <500ms (端侧) |
-| **隐私保护** | 中等 | 高 | 低 | **极高** (GUI-MCP) | 高 (动态路由) |
-| **模型规模** | GLM-4-9B | Qwen2-VL 2B/7B/72B | GUI-Owl 7B/32B | Qwen3-VL 4B/8B | Qwen3-VL 2B-235B |
-| **动作效率** | - | ~20-30 tokens | ~20-30 tokens | ~15-20 tokens | ~15-20 tokens |
-| **开源状态** | 框架开源 | 工具库开源 | **完全开源** | **完全开源** | **完全开源** |
-| **特色基准** | OpenTable 96.2% | OSWorld 24.6% | OSWorld 37.7% | AndroidDaily 89.91% | MobileWorld 41.7% |
-| **商业落地** | 青言插件 | 豆包手机 | - | GUI-MCP 协议 | - |
+| 维度 | AutoGLM | UI-TARS (豆包) | Mobile-Agent-v3 | Step-GUI | MAI-UI | MobiAgent |
+|------|---------|---------------|----------------|----------|--------|-----------|
+| **部署形态** | 插件/App | OS 深度集成 | Python 框架 | 端侧本地/MCP | 端云混合 | Python 框架/App |
+| **执行方式** | Planner+Grounder | 端到端模型 | 多智能体框架 | 端到端模型 | 端到端模型 | Decider+Grounder/Mixed |
+| **执行权限** | ADB/无障碍 | **INJECT_EVENTS** ⭐ | ADB | ADB/标准 | ADB/标准 | ADB |
+| **响应延迟** | ~1-2s | **<500ms** (端侧) | ~3-5s (多轮) | <1s | <500ms (端侧) | **<1s** (AgentRR 加速) |
+| **隐私保护** | 中等 | 高 | 低 | **极高** (GUI-MCP) | 高 (动态路由) | 中等 |
+| **模型规模** | GLM-4-9B | Qwen2-VL 2B/7B/72B | GUI-Owl 7B/32B | Qwen3-VL 4B/8B | Qwen3-VL 2B-235B | MobiMind 4B/7B/8B |
+| **动作效率** | - | ~20-30 tokens | ~20-30 tokens | ~15-20 tokens | ~15-20 tokens | ~15-20 tokens |
+| **开源状态** | 框架开源 | 工具库开源 | **完全开源** | **完全开源** | **完全开源** | **完全开源** |
+| **特色基准** | OpenTable 96.2% | OSWorld 24.6% | OSWorld 37.7% | AndroidDaily 89.91% | MobileWorld 41.7% | MobiFlow 78.3% |
+| **商业落地** | 青言插件 | 豆包手机 | - | GUI-MCP 协议 | - | MobiAgent App |
 
 ### 7.1.1 硬件要求与推理性能
 
@@ -1218,11 +1351,15 @@ $$
 | **UI-TARS-72B** | ~70GB (FP16) | A100 80GB | - | ~3s | ❌ 仅云端 |
 | **GUI-Owl-7B** | ~7GB (FP16) | RTX 4060 Ti | - | ~1s | ⚠️ 需服务器 |
 | **GUI-Owl-32B** | ~32GB (FP16) | A100 40GB×2 | - | ~2s | ❌ 仅云端 |
+| **MobiMind-Mixed-4B** | ~4GB (FP16) | RTX 4060 / M1 | - | ~500ms | ✅ 手机 |
+| **MobiMind-Mixed-7B** | ~8GB (FP16) | RTX 4070 | - | ~800ms | ✅ PC |
+| **MobiMind-4B-AWQ** | ~2GB (INT4) | 骁龙 8 Gen 2 | - | <500ms | ✅ 手机 |
 
 **量化后的端侧部署**：
 - Step-GUI-4B (INT8): ~2GB 显存，适合旗舰手机
 - MAI-UI-2B (INT8): ~1GB 显存，适合中端手机
 - AgentCPM-GUI-8B (INT4): ~4GB 显存，适合高端手机
+- MobiMind-Reasoning-4B-AWQ: ~2GB 显存，适合旗舰手机
 
 ### 7.1.2 商业化产品对比
 
@@ -1305,7 +1442,7 @@ $$
    - KL 散度保持低位且稳定：策略更新在安全信任域内
 
 3. **尾部风险抑制**：
-   - K3-KL 估计器（$$E[e^\Delta - \Delta - 1]$$）持续下降（0.45 → 0.30）
+   - K3-KL 估计器（$E[e^\Delta - \Delta - 1]$）持续下降（0.45 → 0.30）
    - 证明：模型逐步最小化极端偏离，更新保守
 
 4. **方差缩减**：
@@ -1403,7 +1540,7 @@ $$
 \mathcal{T}^{(k)} = \text{Rollout}(M^{(k)}, \mathcal{Q})
 $$
 
-包含端到端输出 $$\mathcal{T}_{\text{E2E}}^{(k)}$ 和角色特定输出 $\mathcal{T}_{\text{Role}}^{(k)}$$
+包含端到端输出 $\mathcal{T}_{\text{E2E}}^{(k)}$ 和角色特定输出 $\mathcal{T}_{\text{Role}}^{(k)}$
 
 第 $k+1$ 轮训练：
 
@@ -1498,7 +1635,26 @@ $$
 2. GUI-Owl 作为基座模型，既可以端到端使用，也可以作为多智能体框架的组件
 3. 完全开源，社区活跃
 
-### 9.5 技术实现难度对比
+### 9.5 场景五：重复任务加速与个性化
+
+**推荐方案**：**MobiAgent**
+
+**理由**：
+1. **AgentRR 加速框架**对重复任务实现 90%+ 加速，大幅降低成本
+2. **三层内存系统**（用户画像、经验、动作缓存）支持个性化和知识积累
+3. **MobiFlow 评测基准**提供科学的离线验证方法
+4. 完全开源，支持自定义 Decider/Grounder 或 Mixed 模式
+
+**架构**：
+```
+首次执行 → MobiMind 模型推理 → ActionTree 记录
+         ↓
+重复任务 → ActionTree 回放 → 直接执行（无模型调用）
+         ↓
+内存增强 → 用户画像 + 经验检索 → 个性化优化
+```
+
+### 9.6 技术实现难度对比
 
 为了帮助团队评估工程投入，我们对各方案的实现难度进行了评级：
 
@@ -1510,6 +1666,7 @@ $$
 | **Step-GUI** | ⭐⭐⭐⭐ | ⭐⭐⭐ (CSRS 自动化) | ⭐⭐⭐⭐ (多轮迭代) | ⭐⭐ (标准协议) | 5-8 人 |
 | **MAI-UI** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ (多源数据) | ⭐⭐⭐⭐⭐ (在线 RL) | ⭐⭐⭐⭐ (端云协同) | 10+ 人 |
 | **AgentCPM-GUI** | ⭐⭐⭐ | ⭐⭐⭐ (需中文数据) | ⭐⭐⭐ (标准 GRPO) | ⭐⭐ (标准 ADB) | 3-5 人 |
+| **MobiAgent** | ⭐⭐⭐ | ⭐⭐ (可用开源) | ⭐⭐ (标准 SFT) | ⭐⭐⭐ (AgentRR 集成) | 3-5 人 |
 
 **快速启动建议（按难度递增）**：
 
@@ -1532,22 +1689,23 @@ $$
 
 ## 10. 核心技术对比：一张表看懂所有差异
 
-| 技术维度 | AutoGLM | UI-TARS | Mobile-Agent-v3 | Step-GUIEdge | MAI-UI | AgentCPM-GUI |
-|---------|---------|---------|----------------|--------------|--------|--------------|
-| **架构流派** | 分而治之 | 端到端 | 多智能体 | 端侧优化 | 端云协同 | 端到端+RFT |
-| **核心创新** | 中间接口 | System-2 推理 | 四智能体协作 | CSRS 数据飞轮 | 用户交互+MCP | 中文数据+紧凑动作 |
-| **基座模型** | ChatGLM | Qwen2-VL | Qwen2.5-VL | Qwen3-VL | Qwen3-VL | MiniCPM-V |
-| **数据规模** | ~1K BC | 15.1K + 6M 教程 | ~50K 轨迹 | Mid:11.2M/Cold:1.67M | ~60K 轨迹 | 55K 中文轨迹 |
-| **总训练量** | - | ~50B tokens | - | - | - | 6.9M instances |
-| **RL 算法** | Actor-Critic+KL | DPO | TRPO | GRPO+Semi-Online | GRPO+Clip-Higher | GRPO |
-| **模型规模** | 9B | 2B/7B/72B | 7B/32B | 4B/8B | 2B/8B/32B/235B | 8B |
-| **动作 Token** | - | ~20-30 | ~20-30 | ~15-20 | ~15-20 | **9.7** |
-| **推理延迟** | ~2s | <500ms (端侧) | ~3s (多轮) | <1s | 端侧 <500ms | <800ms |
-| **开源状态** | 框架开源 | 仅论文+工具库 | 完全开源 | 完全开源 | 完全开源 | 完全开源 |
-| **部署形态** | 插件/App | 深度集成 OS | Python 框架 | 端侧本地 | 端云混合 | 端侧/云端 |
-| **AndroidWorld** | 36.2% | 46.6% | 73.3% | 80.2% (P@3) | 76.7% (235B) | - |
-| **OSWorld** | - | 24.6% (50步) | 37.7% | 48.5% (P@3) | - | - |
-| **最佳场景** | 通用 Web/Android | 系统级集成 | 复杂长链路 | 隐私敏感 | 全场景覆盖 | 中文移动端 |
+| 技术维度 | AutoGLM | UI-TARS | Mobile-Agent-v3 | Step-GUIEdge | MAI-UI | AgentCPM-GUI | MobiAgent |
+|---------|---------|---------|----------------|--------------|--------|--------------|-----------|
+| **架构流派** | 分而治之 | 端到端 | 多智能体 | 端侧优化 | 端云协同 | 端到端+RFT | 加速增强 |
+| **核心创新** | 中间接口 | System-2 推理 | 四智能体协作 | CSRS 数据飞轮 | 用户交互+MCP | 中文数据+紧凑动作 | AgentRR 加速+三层内存 |
+| **基座模型** | ChatGLM | Qwen2-VL | Qwen2.5-VL | Qwen3-VL | Qwen3-VL | MiniCPM-V | Qwen2.5-VL |
+| **数据规模** | ~1K BC | 15.1K + 6M 教程 | ~50K 轨迹 | Mid:11.2M/Cold:1.67M | ~60K 轨迹 | 55K 中文轨迹 | 自建+开源混合 |
+| **总训练量** | - | ~50B tokens | - | - | - | 6.9M instances | - |
+| **RL 算法** | Actor-Critic+KL | DPO | TRPO | GRPO+Semi-Online | GRPO+Clip-Higher | GRPO | SFT |
+| **模型规模** | 9B | 2B/7B/72B | 7B/32B | 4B/8B | 2B/8B/32B/235B | 8B | 4B/7B/8B |
+| **动作 Token** | - | ~20-30 | ~20-30 | ~15-20 | ~15-20 | **9.7** | ~15-20 |
+| **推理延迟** | ~2s | <500ms (端侧) | ~3s (多轮) | <1s | 端侧 <500ms | <800ms | **<1s** (AgentRR) |
+| **开源状态** | 框架开源 | 仅论文+工具库 | 完全开源 | 完全开源 | 完全开源 | 完全开源 | **完全开源** |
+| **部署形态** | 插件/App | 深度集成 OS | Python 框架 | 端侧本地 | 端云混合 | 端侧/云端 | Python 框架/App |
+| **AndroidWorld** | 36.2% | 46.6% | 73.3% | 80.2% (P@3) | 76.7% (235B) | - | - |
+| **OSWorld** | - | 24.6% (50步) | 37.7% | 48.5% (P@3) | - | - | - |
+| **MobiFlow** | - | - | - | - | - | - | **78.3%** |
+| **最佳场景** | 通用 Web/Android | 系统级集成 | 复杂长链路 | 隐私敏感 | 全场景覆盖 | 中文移动端 | 重复任务加速 |
 
 ---
 
@@ -1575,6 +1733,7 @@ $$
 | **OSWorld** | 在线 | Desktop | 369 | 动态 | 脚本验证 | **Step-GUI-8B: 48.5%** |
 | **AndroidDaily** | 在线 | Mobile (中文) | 235 | 动态 | LLM Judge | **Step-GUI-8B: 52.5%** |
 | **MobileWorld** | 在线 | Mobile | 201 | 动态 | 含 MCP+交互 | MAI-UI-235B: 41.7% |
+| **MobiFlow** | 离线 | Mobile | - | 动态 | DAG 路径验证 | **MobiMind-Mixed-7B: 78.3%** |
 
 ### 11.3 评估指标详解
 
@@ -1598,9 +1757,9 @@ $$
 
 ---
 
-## 11. 未来趋势与技术展望
+## 未来趋势与技术展望
 
-### 11.1 趋势一：端云协同成为标配
+### 趋势一：端云协同成为标配
 
 **观察**：MAI-UI 和 Step-GUI 都不约而同地提出了端云协同方案。
 
@@ -1636,7 +1795,7 @@ $$
 - 云端调用减少 **42.7%**（相比纯云端）
 - 平均任务成本降低 **60%**
 
-### 11.2 趋势二：反思与自我纠错成为必备能力
+### 趋势二：反思与自我纠错成为必备能力
 
 **核心发现**：所有 SOTA 模型都引入了某种形式的"反思"机制。
 
@@ -1677,7 +1836,7 @@ $$
 - UI-TARS-72B：SFT 18.8% → DPO **22.7%** (OSWorld, 15步)
 - MAI-UI：无错误摘要 60.7% → 有错误摘要 **65.4%** (+6.9%)
 
-### 11.3 趋势三：多模态工具调用 (MCP) 成为新边界
+### 趋势三：多模态工具调用 (MCP) 成为新边界
 
 **MAI-UI 的先驱性探索**：
 - 不再局限于 UI 操作，可以调用 API（如 GitHub, 地图, 股票查询）
@@ -1732,7 +1891,7 @@ $$
 - 第三方开发者贡献专用工具（如银行 MCP、OA MCP）
 - 跨平台工具互操作性
 
-### 11.4 趋势四：从单任务到终身学习（Stage 4: Active & Lifelong Agent）
+### 趋势四：从单任务到终身学习（Stage 4: Active & Lifelong Agent）
 
 **当前瓶颈**：所有模型都是在固定数据集上训练，部署后不再学习。
 
@@ -2248,7 +2407,7 @@ Updated Plan:
 │
 ├─ 问题3: 端侧约束？
 │  ├─ 显存 <2GB → **MAI-UI-2B**（49.1% AndroidWorld）
-│  ├─ 显存 <4GB → **Step-GUI-4B**（75.8% AndroidWorld）
+│  ├─ 显存 <4GB → **Step-GUI-4B** 或 **MobiMind-4B**
 │  ├─ 显存 <8GB → **AgentCPM-GUI-8B**（中文场景最佳）
 │  └─ 无限制 → 端云协同（MAI-UI 或 Step-GUI）
 │
@@ -2259,13 +2418,20 @@ Updated Plan:
 │  ├─ 鲁棒性 → **Mobile-Agent-v3**（Reflector 机制）
 │  ├─ 可解释性 → **UI-TARS**（显式 System-2 推理）
 │  ├─ 开发效率 → **MAI-UI**（OpenAI 兼容 API）
+│  ├─ **重复任务加速** → **MobiAgent**（AgentRR 90%+ 加速）
 │  └─ 商业落地 → **AutoGLM** 或 **UI-TARS**（已有产品）
 │
-└─ 问题5: 团队技术栈？
-   ├─ Python + ADB → **Mobile-Agent-v3**（完全开源）
-   ├─ MCP 协议 → **Step-GUI**（标准化集成）
-   ├─ 已有 Qwen3-VL → **Step-GUI** 或 **MAI-UI**
-   └─ 从零开始 → **AutoGLM**（架构清晰，易学习）
+├─ 问题5: 团队技术栈？
+│  ├─ Python + ADB → **Mobile-Agent-v3** 或 **MobiAgent**（完全开源）
+│  ├─ MCP 协议 → **Step-GUI**（标准化集成）
+│  ├─ 已有 Qwen3-VL → **Step-GUI** 或 **MAI-UI**
+│  └─ 从零开始 → **AutoGLM**（架构清晰，易学习）
+│
+└─ 问题6: 任务特点？
+   ├─ 高频重复任务 → **MobiAgent**（AgentRR 缓存加速）
+   ├─ 需要个性化 → **MobiAgent**（三层内存系统）
+   ├─ 长链路复杂任务 → **Mobile-Agent-v3**（Reflector 错误恢复）
+   └─ 通用任务 → 根据前述条件综合选择
 ```
 
 ---
@@ -2284,6 +2450,7 @@ Updated Plan:
 | **Step-GUI** | CSRS 数据飞轮 + 端侧优化 | AndroidWorld/OSWorld | 80.2% / 48.5% | 隐私敏感、消费级硬件 |
 | **MAI-UI** | 端云协同 + MCP 增强 | MobileWorld | 41.7% (含交互+MCP) | 商业落地、全场景 |
 | **AgentCPM-GUI** | 中文数据 + 紧凑动作 | CAGUI | 71.3% (中文定位) | 中文移动端、端侧部署 |
+| **MobiAgent** | AgentRR 加速 + 三层内存 | MobiFlow | 78.3% + 90%+ 加速 | 重复任务、个性化场景 |
 
 ### 核心技术贡献总结
 
@@ -2470,8 +2637,10 @@ MCP 工具调用
 | 2025.01 | **UI-TARS** | 字节 & 清华 | System-2 推理、反思调优 | [arXiv:2501.12326](https://arxiv.org/abs/2501.12326) |
 | 2025.06 | **AgentCPM-GUI** | 清华 & 人大 & OpenBMB | 中文数据、紧凑动作、GRPO | 论文未公开链接 |
 | 2025.08 | **Mobile-Agent-v3** | 阿里通义 | 多智能体、自进化轨迹 | [arXiv:2508.15144](https://arxiv.org/abs/2508.15144) |
+| 2025.09 | **MobiAgent** | 上海交大 IPADS | AgentRR 加速、MobiFlow 基准 | [arXiv:2509.00531](https://arxiv.org/abs/2509.00531) |
 | 2025.12 | **Step-GUI** | 阶跃星辰 | CSRS、GUI-MCP、AndroidDaily | [arXiv:2512.15431](https://arxiv.org/abs/2512.15431) |
 | 2025.12 | **MAI-UI** | 阿里通义 | 端云协同、MCP+交互、MobileWorld | [arXiv:2512.22047](https://arxiv.org/abs/2512.22047) |
+| 2025.12 | **MobiMem** | 上海交大 IPADS | 自进化内存系统 | [arXiv:2512.15784](https://arxiv.org/abs/2512.15784) |
 
 ### A.2 开源仓库与许可证
 
@@ -2483,6 +2652,7 @@ MCP 工具调用
 | **Step-GUI** | [stepfun-ai/gelab-zero](https://github.com/stepfun-ai/gelab-zero) | MIT | 完整代码+模型+MCP 服务器 |
 | **MAI-UI** | [Tongyi-MAI/MAI-UI](https://github.com/Tongyi-MAI/MAI-UI) | Apache 2.0 | 完整代码+Agent 实现 |
 | **AgentCPM-GUI** | [OpenBMB/AgentCPM-GUI](https://github.com/OpenBMB/AgentCPM-GUI) | Apache 2.0 | 完整代码+模型+CAGUI 数据 |
+| **MobiAgent** | [anthropics/mobiagent](https://github.com/anthropics/mobiagent) | MIT | MobiMind+AgentRR+MobiFlow |
 
 ### A.3 商业产品与可用性
 
@@ -2520,6 +2690,10 @@ examples/agenticx-for-guiagent/gui-agent-research/researches/
 ├── AgentCPM-GUI/
 │   ├── full.md
 │   └── images/
+├── MobiAgent/
+│   ├── README.md (项目概述)
+│   ├── code-analysis.md (代码解构)
+│   └── images/
 └── GELab-Zero/
     └── code-analysis.md (GELab-Zero 代码解构)
 ```
@@ -2531,11 +2705,13 @@ examples/agenticx-for-guiagent/gui-agent-research/researches/
 - Step-GUI-4B/8B: [HuggingFace - stepfun-ai/Step-GUI](https://huggingface.co/stepfun-ai)
 - MAI-UI: [HuggingFace - Tongyi-MAI/MAI-UI](https://huggingface.co/Tongyi-MAI)
 - AgentCPM-GUI: [HuggingFace - OpenBMB/AgentCPM-GUI](https://huggingface.co/OpenBMB)
+- MobiMind-3B/7B/8B: [HuggingFace - IPADS/MobiMind](https://huggingface.co/IPADS)
 
 **数据集**：
 - CAGUI (中文 GUI 基准): [OpenBMB/AgentCPM-GUI](https://github.com/OpenBMB/AgentCPM-GUI)
 - AndroidDaily: [Step-GUI Project](https://opengelab.github.io/)
 - MobileWorld: [Tongyi-MAI/MobileWorld](https://github.com/Tongyi-MAI/MobileWorld)
+- MobiFlow (DAG 评测基准): [IPADS/MobiFlow](https://github.com/anthropics/mobiagent)
 
 **在线演示**：
 - AutoGLM Web Demo: [https://xiao9905.github.io/AutoGLM](https://xiao9905.github.io/AutoGLM)
@@ -2543,10 +2719,10 @@ examples/agenticx-for-guiagent/gui-agent-research/researches/
 
 ---
 
-**作者简介**：Damon Li，专注于 GUI Agent 和多模态大模型工程化研究。本文基于对 6 个主流 GUI Agent 系统的论文精读、代码深度审查，以及 300+ 小时的技术调研完成。
+**作者简介**：Damon Li，专注于 GUI Agent 和多模态大模型工程化研究。本文基于对 7 个主流 GUI Agent 系统的论文精读、代码深度审查，以及 300+ 小时的技术调研完成。
 
 **致谢**：
-- 感谢智谱 AI（AutoGLM）、字节跳动 Seed 团队（UI-TARS）、阿里巴巴通义实验室（Mobile-Agent-v3, GUI-Owl, MAI-UI）、阶跃星辰 GELab 团队（Step-GUI）、清华大学、人民大学、OpenBMB 等机构的开源贡献
+- 感谢智谱 AI（AutoGLM）、字节跳动 Seed 团队（UI-TARS）、阿里巴巴通义实验室（Mobile-Agent-v3, GUI-Owl, MAI-UI）、阶跃星辰 GELab 团队（Step-GUI）、上海交通大学 IPADS 实验室（MobiAgent）、清华大学、人民大学、OpenBMB 等机构的开源贡献
 - 感谢各团队慷慨分享技术细节和评测数据
 
 **更新日志**：
