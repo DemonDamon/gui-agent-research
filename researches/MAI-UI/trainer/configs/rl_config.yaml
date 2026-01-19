@@ -1,0 +1,14 @@
+# RL Training Configuration
+
+sft_model_path: "./models/mai-ui-2b-sft"
+output_dir: "./models/mai-ui-2b-rl"
+
+# Environment parameters
+avd_name: "pixel_2_rl"
+task_path: "./data/benchmarks/sample_task.textproto"
+
+# PPO parameters
+num_epochs: 10
+ppo_steps: 256
+batch_size: 4
+learning_rate: 1.41e-5

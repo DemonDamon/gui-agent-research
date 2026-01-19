@@ -1,0 +1,12 @@
+# SFT Training Configuration
+
+model_name_or_path: "Tongyi-MAI/MAI-UI-2B"
+data_path: "./data/processed/sft_data.json"
+output_dir: "./models/mai-ui-2b-sft"
+
+# Training parameters
+max_length: 2048
+num_train_epochs: 3
+per_device_train_batch_size: 1
+learning_rate: 2.0e-5
+save_steps: 500
