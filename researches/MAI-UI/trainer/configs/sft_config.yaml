@@ -1,12 +1,26 @@
-# SFT Training Configuration
+_# SFT Training Configuration for MAI-UI
+# Author: Damon Li
+# Date: 2026-01-19
 
-model_name_or_path: "Tongyi-MAI/MAI-UI-2B"
-data_path: "./data/processed/sft_data.json"
-output_dir: "./models/mai-ui-2b-sft"
+model:
+  name: "MAI-UI-2B"
+  path: "Tongyi-MAI/MAI-UI-2B" # Using pre-trained model from HuggingFace
 
-# Training parameters
-max_length: 2048
-num_train_epochs: 3
-per_device_train_batch_size: 1
-learning_rate: 2.0e-5
-save_steps: 500
+data:
+  path: "/home/ubuntu/gui-agent-research/researches/MAI-UI/trainer/data/processed/sft_data.jsonl"
+  # The build_data.py script will generate data from these sources
+  sources:
+    - "rejection_sampling"
+    - "manual_annotation"
+    - "automatic_rollout"
+
+training:
+  output_dir: "/home/ubuntu/gui-agent-research/researches/MAI-UI/models/sft_model"
+  max_length: 2048
+  num_train_epochs: 3
+  per_device_train_batch_size: 2 # Adjusted for typical GPU memory
+  gradient_accumulation_steps: 8
+  learning_rate: 2.0e-5
+  logging_steps: 10
+  save_steps: 100
+  warmup_steps: 100

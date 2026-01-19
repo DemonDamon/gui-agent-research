@@ -1,14 +1,32 @@
-# RL Training Configuration
+# RL Training Configuration for MAI-UI (Enhanced)
+# Author: Damon Li
+# Date: 2026-01-19
 
-sft_model_path: "./models/mai-ui-2b-sft"
-output_dir: "./models/mai-ui-2b-rl"
+model:
+  sft_model_path: "/home/ubuntu/gui-agent-research/researches/MAI-UI/models/sft_model"
+  output_dir: "/home/ubuntu/gui-agent-research/researches/MAI-UI/models/rl_model"
 
-# Environment parameters
-avd_name: "pixel_2_rl"
-task_path: "./data/benchmarks/sample_task.textproto"
+environment:
+  # Configuration for large-scale parallel environments
+  num_parallel_envs: 512
+  avd_prefix: "mai_ui_rl_"
+  task_source: "/path/to/curriculum/learning/tasks"
 
-# PPO parameters
-num_epochs: 10
-ppo_steps: 256
-batch_size: 4
-learning_rate: 1.41e-5
+ppo:
+  num_epochs: 10
+  ppo_steps: 256       # Number of steps to run for each environment per update
+  batch_size: 128      # PPO batch size
+  learning_rate: 1.41e-5
+  adap_kl_ctrl: true   # Adaptive KL control
+  init_kl_coef: 0.2
+  gamma: 0.99
+  lam: 0.95
+  cliprange: 0.2
+  vf_coef: 0.5
+
+system:
+  # System-level optimizations
+  asynchronous_rollout: true
+  hybrid_parallelism:
+    - "data_parallel"
+    - "pipeline_parallel"
