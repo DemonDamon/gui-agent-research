@@ -3,30 +3,51 @@
 # Date: 2026-01-19
 
 model:
-  sft_model_path: "/home/ubuntu/gui-agent-research/researches/MAI-UI/models/sft_model"
-  output_dir: "/home/ubuntu/gui-agent-research/researches/MAI-UI/models/rl_model"
+  sft_model_path: "/path/to/sft_model"
+  output_dir: "/path/to/rl_model"
+  model_name: "Tongyi-MAI/MAI-UI-2B"  # Model name for agent
+
+# LLM API configuration
+llm_base_url: "https://api.openai.com/v1"  # Required: LLM service base URL
+api_key: "your-api-key-here"  # Can be overridden via --api_key
+
+# Agent configuration
+agent_type: "mai_ui_agent"  # Agent type from upstream registry
+device: "emulator-5554"
+step_wait_time: 1.0
+suite_family: "mobile_world"
+enable_mcp: false  # Enable MCP tools
 
 environment:
   # Configuration for large-scale parallel environments
-  num_parallel_envs: 512
-  avd_prefix: "mai_ui_rl_"
-  task_source: "/path/to/curriculum/learning/tasks"
+  num_parallel_envs: 32  # Number of parallel environments (adjust based on resources)
+  aw_urls: []  # List of AndroidWorld backend URLs (empty = auto-discover)
+  env_name_prefix: "mobile_world_env"
+  env_image: "mobile_world"
+  task_source: "/path/to/curriculum/learning/tasks"  # Optional: task source
 
 ppo:
   num_epochs: 10
-  ppo_steps: 256       # Number of steps to run for each environment per update
-  batch_size: 128      # PPO batch size
+  ppo_steps: 256  # Number of rollout steps per update
+  batch_size: 128  # PPO batch size
   learning_rate: 1.41e-5
-  adap_kl_ctrl: true   # Adaptive KL control
+  adap_kl_ctrl: true  # Adaptive KL control
   init_kl_coef: 0.2
-  gamma: 0.99
-  lam: 0.95
-  cliprange: 0.2
-  vf_coef: 0.5
+  gamma: 0.99  # Discount factor
+  lam: 0.95  # GAE lambda
+  cliprange: 0.2  # PPO clip range (DAPO: asymmetric, but using symmetric here)
+  vf_coef: 0.5  # Value function coefficient
+
+# Training configuration
+max_step: 50  # Maximum steps per trajectory
+log_file_root: "./rl_logs"  # Root directory for trajectory logs
+
+# Experience replay buffer
+replay_buffer_size: 8  # Max trajectories per task in replay buffer
 
 system:
   # System-level optimizations
   asynchronous_rollout: true
   hybrid_parallelism:
     - "data_parallel"
-    - "pipeline_parallel"
+    - "pipeline_parallel"  # Placeholder for future implementation
