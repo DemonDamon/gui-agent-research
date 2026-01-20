@@ -1,0 +1,48 @@
+# Default application name to package name mapping
+# Common apps for MAI-UI WebUI
+
+# Social & Communication
+微信: com.tencent.mm
+QQ: com.tencent.mobileqq
+抖音: com.ss.android.ugc.aweme
+小红书: com.xingin.xhs
+微博: com.sina.weibo
+
+# Payment & Finance
+支付宝: com.eg.android.AlipayGphone
+淘宝: com.taobao.taobao
+京东: com.jingdong.app.mall
+美团: com.sankuai.meituan
+
+# Travel & Maps
+高德地图: com.autonavi.minimap
+百度地图: com.baidu.BaiduMap
+飞猪旅行: com.taobao.trip
+携程旅行: ctrip.android.view
+滴滴出行: com.sdu.didi.psnger
+
+# Media & Entertainment
+网易云音乐: com.netease.cloudmusic
+QQ音乐: com.tencent.qqmusic
+爱奇艺: com.qiyi.video
+腾讯视频: com.tencent.qqlive
+哔哩哔哩: tv.danmaku.bili
+
+# Tools & Utilities
+设置: com.android.settings
+相机: com.android.camera
+相册: com.android.gallery3d
+日历: com.android.calendar
+时钟: com.android.deskclock
+计算器: com.android.calculator2
+文件管理器: com.android.filemanager
+
+# Browser
+Chrome: com.android.chrome
+UC浏览器: com.UCMobile
+夸克: com.quark.browser
+
+# Office
+WPS Office: cn.wps.moffice_eng
+钉钉: com.alibaba.android.rimet
+企业微信: com.tencent.wework

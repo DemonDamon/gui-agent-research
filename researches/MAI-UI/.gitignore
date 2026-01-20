@@ -1,5 +1,6 @@
 upstream/
 dataset/
+MAI-UI-WebUI/
 .docs/
 
 .DS_Store
