@@ -13,9 +13,9 @@ ollama_local:
   default_model: MAI-UI-8B
 vllm_2b:
   display_name: vLLM Local (2B)
-  api_base: http://localhost:8000/v1
+  api_base: http://192.168.32.119:7777/v1
   api_key: ''
-  default_model: MAI-UI-2B
+  default_model: MAI-UI-SFT
 openai_compatible:
   display_name: OpenAI Compatible
   api_base: ''
