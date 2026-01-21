@@ -44,29 +44,39 @@ model:
 # Training settings
 training:
   # SFT training
+  # MAI-UI SFT focuses on Grounding + Navigation data with Instruction-as-Reasoning
   sft:
-    max_length: 1024  # Reduced from 2048 for memory efficiency
-    num_train_epochs: 3
-    per_device_train_batch_size: 1  # Reduced from 2 for memory efficiency
-    gradient_accumulation_steps: 16  # Increased to maintain effective batch size
-    learning_rate: 2.0e-4  # Higher learning rate for LoRA
-    warmup_steps: 100
-    logging_steps: 10
-    save_steps: 100
-    save_total_limit: 2
-    bf16: true
+    max_length: 4096  # Longer context for multi-step reasoning and history
+    num_train_epochs: 1  # More epochs for small dataset (31 samples)
+    per_device_train_batch_size: 1  # Keep small for memory efficiency with VL model
+    gradient_accumulation_steps: 4  # Effective batch size = 4 (better for small dataset)
+    learning_rate: 1.0e-4  # Higher LR for LoRA (standard: 1e-4 to 2e-4)
+    warmup_steps: 5  # Shorter warmup for small dataset
+    warmup_ratio: 0.1  # 10% warmup
+    logging_steps: 1  # Log every step for small dataset monitoring
+    save_steps: 5  # Save more frequently
+    save_total_limit: 3
+    bf16: false  # V100 doesn't support bf16, will auto-switch to fp16
   
   # Memory optimization
-  gradient_checkpointing: true  # Enable gradient checkpointing to save memory
-  use_4bit: false  # Set to true for even more memory savings (requires bitsandbytes)
+  # V100 32GB needs both gradient_checkpointing AND 4-bit quantization for VL models
+  gradient_checkpointing: true  # Required to avoid OOM
+  use_4bit: true  # Enable 4-bit quantization - reduces VRAM significantly and speeds up training
+  
+  # Image limit per sample (critical for training speed!)
+  # Each image adds ~500MB VRAM and significant processing time
+  # 26 images per sample is WAY too many - limit to 1-3 for practical training
+  max_images_per_sample: 3  # Start with 1, increase if VRAM allows
   
   # LoRA configuration (Parameter-Efficient Fine-Tuning)
+  # NOTE: MAI-UI uses SFT + GRPO (RL) paradigm, different from AgentCPM-GUI's vision LoRA approach
+  # Vision encoder is typically frozen during SFT; Grounding is enhanced via RL Stage 1 (GRPO)
   lora:
-    enabled: true  # Enable LoRA for memory-efficient fine-tuning
-    r: 16  # LoRA rank (lower = less memory, higher = more capacity)
-    alpha: 32  # LoRA alpha (typically 2x r)
+    enabled: true  # Enable LoRA for memory-efficient SFT
+    r: 8  # Reduced for V100 32GB - sufficient for 2B model
+    alpha: 16  # 2x r for stable learning
     dropout: 0.05  # LoRA dropout
-    target_modules:  # Modules to apply LoRA to
+    target_modules:  # LLM attention + MLP layers (standard for Qwen2-VL)
       - q_proj
       - k_proj
       - v_proj
@@ -74,6 +84,12 @@ training:
       - gate_proj
       - up_proj
       - down_proj
+  
+  # NOTE: MAI-UI does NOT use vision LoRA for SFT
+  # Grounding capability is enhanced via:
+  #   1. Multi-perspective Instruction-as-Reasoning data
+  #   2. RL Stage 1 with GRPO + Point-in-Box reward
+  # tune_vision: false (not applicable for MAI-UI SFT)
     
   # RL training (optional)
   rl:
