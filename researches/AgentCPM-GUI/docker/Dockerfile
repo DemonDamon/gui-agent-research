@@ -35,8 +35,8 @@ ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 RUN nvcc --version && \
     test -f /usr/local/cuda/bin/nvcc && echo "CUDA symlink created successfully"
 
-# 安装 deepspeed（会自动检测 nvcc）
-RUN pip install --upgrade pip && \
-    pip install deepspeed
+# 复制requirements.txt到/workspace
+COPY requirements.txt /workspace/requirements.txt
+RUN pip install -r /workspace/requirements.txt
 
 CMD ["/bin/bash"]
