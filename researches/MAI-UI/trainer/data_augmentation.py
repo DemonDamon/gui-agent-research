@@ -328,16 +328,129 @@ def create_anti_loop_sample_messages(
     return new_sample
 
 
+def create_upload_after_click_samples(
+    base_sample: dict,
+    variation_idx: int = 0,
+) -> dict | None:
+    """Create POSITIVE training samples for post-upload actions (OpenAI messages format).
+    
+    This function creates samples that teach the model to click on the uploaded file
+    (not the blue plus button) after a successful upload. Uses contrastive reasoning
+    in the thought process to reinforce the correct behavior.
+    
+    IMPORTANT: This function ONLY generates positive samples (correct actions).
+    Negative samples (incorrect actions) are harmful for SFT training because
+    the model will learn to output wrong action coordinates.
+    
+    Args:
+        base_sample: Base sample with upload success scenario
+        variation_idx: Index for creating different thinking variations (0-4)
+    
+    Returns:
+        Enhanced sample dict or None
+    """
+    if "messages" not in base_sample:
+        return None
+    
+    new_sample = copy.deepcopy(base_sample)
+    messages = new_sample["messages"]
+    
+    # Find assistant message
+    assistant_msg = None
+    for msg in messages:
+        if msg.get("role") == "assistant":
+            assistant_msg = msg
+            break
+    
+    if not assistant_msg:
+        return None
+    
+    # Check if this is an upload success scenario
+    assistant_content = assistant_msg.get("content", "")
+    if isinstance(assistant_content, str):
+        if "upload" not in assistant_content.lower() and "上传" not in assistant_content:
+            return None
+    elif isinstance(assistant_content, list):
+        text_content = " ".join(
+            item.get("text", "") for item in assistant_content 
+            if isinstance(item, dict) and item.get("type") == "text"
+        )
+        if "upload" not in text_content.lower() and "上传" not in text_content:
+            return None
+    
+    # Correct: Click on the uploaded file (coordinates in center-upper area)
+    correct_coord = [0.4844844844844845, 0.26926926926926925]  # Reference from step_015
+    
+    # Multiple thinking variations with CONTRASTIVE REASONING
+    # Each variation explicitly mentions what NOT to click (the blue plus button)
+    thinking_variations = [
+        (
+            "Thought: The file has been uploaded successfully. "
+            "To share it, I need to click on the uploaded file itself (in the file list), "
+            "NOT the blue plus button in the bottom right corner. "
+            "The plus button is for uploading new files, not for sharing existing ones."
+        ),
+        (
+            "Thought: Upload complete! Now I should click on the file item I just uploaded "
+            "to access the share options. I must NOT click the blue plus button at the bottom - "
+            "that would start a new upload instead of sharing this file."
+        ),
+        (
+            "Thought: The file upload is finished. To continue with sharing, "
+            "I need to select the uploaded file by clicking on it in the file list area. "
+            "Important: The blue plus button in the corner is for adding more files, "
+            "not for sharing. I should click the file item itself."
+        ),
+        (
+            "Thought: File uploaded successfully. Next step is to click on the file entry "
+            "in the list to open sharing options. Note: I should avoid clicking the "
+            "prominent blue plus button at the bottom right - it's for new uploads only."
+        ),
+        (
+            "Thought: 文件上传成功。现在我需要点击文件列表中的文件项来分享它，"
+            "而不是点击右下角的蓝色加号按钮。蓝色加号是用来上传新文件的，"
+            "要分享已上传的文件必须点击文件本身。"
+        ),
+    ]
+    
+    thinking = thinking_variations[variation_idx % len(thinking_variations)]
+    
+    action_json = {
+        "action": "click",
+        "coordinate": correct_coord
+    }
+    
+    # Update assistant response
+    response_text = f"{thinking}\nAction: {json.dumps(action_json, ensure_ascii=False)}"
+    
+    if isinstance(assistant_content, str):
+        assistant_msg["content"] = response_text
+    elif isinstance(assistant_content, list):
+        # Update text content
+        for item in assistant_content:
+            if isinstance(item, dict) and item.get("type") == "text":
+                item["text"] = response_text
+                break
+    
+    return new_sample
+
+
 def process_sft_data_with_history(
     input_file: str,
     output_file: str,
     history_window: int = 5,
     generate_anti_loop: bool = True,
     anti_loop_ratio: float = 0.2,
+    generate_upload_after_samples: bool = True,
+    upload_after_ratio: float = 0.5,  # Increased to 0.5 for aggressive positive augmentation
 ) -> dict[str, int]:
     """Process SFT data file and add action history (OpenAI messages format).
     
     This function works with the OpenAI messages format and preserves images.
+    
+    IMPORTANT: For upload-after-click samples, we ONLY generate POSITIVE samples
+    with contrastive reasoning. Negative samples (wrong actions) are harmful for SFT
+    because the model learns to output the incorrect coordinates.
     
     Args:
         input_file: Path to input SFT JSONL (OpenAI messages format)
@@ -345,6 +458,8 @@ def process_sft_data_with_history(
         history_window: Number of history steps to include
         generate_anti_loop: Whether to generate anti-loop samples
         anti_loop_ratio: Ratio of anti-loop samples to generate
+        generate_upload_after_samples: Whether to generate upload-after-click samples
+        upload_after_ratio: Ratio of upload-after samples to generate (default: 0.5)
     
     Returns:
         Statistics dict
@@ -356,6 +471,7 @@ def process_sft_data_with_history(
         "original_samples": len(data),
         "enhanced_samples": 0,
         "anti_loop_samples": 0,
+        "upload_after_positive_samples": 0,  # Renamed: only positive samples now
     }
     
     # Pass through original samples
@@ -373,6 +489,36 @@ def process_sft_data_with_history(
             if anti_loop_sample:
                 enhanced_samples.append(anti_loop_sample)
                 stats["anti_loop_samples"] += 1
+    
+    # Generate upload-after-click samples (ONLY POSITIVE samples with contrastive reasoning)
+    if generate_upload_after_samples and data:
+        num_upload_after = int(len(data) * upload_after_ratio)
+        
+        # Find upload-related samples
+        upload_samples = [
+            s for s in data 
+            if "messages" in s and any(
+                "upload" in str(msg.get("content", "")).lower() or 
+                "上传" in str(msg.get("content", ""))
+                for msg in s.get("messages", [])
+            )
+        ]
+        
+        if upload_samples:
+            variation_idx = 0
+            for _ in range(num_upload_after):
+                base_sample = random.choice(upload_samples)
+                
+                # Create POSITIVE sample with contrastive reasoning (click correct file)
+                # Use different thinking variations for diversity
+                positive_sample = create_upload_after_click_samples(
+                    base_sample, 
+                    variation_idx=variation_idx
+                )
+                if positive_sample:
+                    enhanced_samples.append(positive_sample)
+                    stats["upload_after_positive_samples"] += 1
+                    variation_idx += 1  # Rotate through thinking variations
     
     # Shuffle
     random.shuffle(enhanced_samples)
@@ -660,6 +806,14 @@ def main() -> None:
         "--no-anti-loop", action="store_true",
         help="Disable anti-loop sample generation"
     )
+    parser.add_argument(
+        "--upload-after-ratio", type=float, default=0.5,
+        help="Ratio of upload-after-click positive samples to generate (default: 0.5)"
+    )
+    parser.add_argument(
+        "--no-upload-after", action="store_true",
+        help="Disable upload-after-click sample generation"
+    )
     
     args = parser.parse_args()
     
@@ -692,11 +846,14 @@ def main() -> None:
                 args.history_window,
                 not args.no_anti_loop,
                 args.anti_loop_ratio,
+                not args.no_upload_after,
+                args.upload_after_ratio,
             )
             print(f"Processed (messages format): {args.input}")
             print(f"  Original samples: {stats['original_samples']}")
             print(f"  Enhanced samples: {stats['enhanced_samples']}")
             print(f"  Anti-loop samples: {stats['anti_loop_samples']}")
+            print(f"  Upload-after positive samples (with contrastive reasoning): {stats.get('upload_after_positive_samples', 0)}")
             print(f"  Total output: {stats['total_output']}")
         else:
             stats = process_trajectory_file(
