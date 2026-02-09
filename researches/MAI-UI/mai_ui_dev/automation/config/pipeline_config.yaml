@@ -1,0 +1,96 @@
+# MAI-UI 自动化数据采集 Pipeline 配置文件
+
+pipeline:
+  name: "MAI-UI数据采集Pipeline"
+  version: "1.0.0"
+
+  # ==================== 任务源配置 ====================
+  task_source:
+    # 任务文件类型: txt (每行一个任务) 或 jsonl (每行一个JSON任务)
+    type: "jsonl"
+
+    # 任务文件路径
+    path: "tasks/tasks.jsonl"
+
+    # 文件编码
+    encoding: "utf-8"
+
+  # ==================== 执行配置 ====================
+  execution:
+    # 设备ID (null 表示自动检测第一个可用设备)
+    device_id: null
+
+    # 并发任务数 (暂未实现多并发，保持为1)
+    max_parallel_tasks: 1
+
+    # 单个任务最大执行步数
+    max_steps_per_task: 15
+
+    # 单个任务超时时间（秒）
+    timeout_per_task: 300
+
+    # 失败重试次数
+    max_retries: 2
+
+    # 重试延迟（秒）
+    retry_delay: 5
+
+    # ==================== Agent 配置 ====================
+    # LLM API 地址
+    llm_base_url: "http://192.168.32.119:7777/v1"
+
+    # 模型名称
+    model_name: "MAI-UI-8B"
+
+    # ==================== 日志配置 ====================
+    # 采集数据存储目录
+    logs_dir: "data/collected"
+
+    # 每个任务开始前是否返回桌面（避免任务间干扰）
+    return_to_desktop: true
+
+    # 任务间延迟（秒）
+    task_delay: 2.0
+
+  # ==================== 打标配置 ====================
+  judge:
+    # 是否启用自动打标
+    enabled: true
+
+    # LLM提供商: openai, anthropic, azure, 等
+    provider: "openai"
+
+    # API地址
+    api_base: "http://47.251.106.113:3010/v1"
+
+    # 打标使用的模型
+    model: "gpt-4o"
+
+    # API密钥 (建议通过环境变量 JUDGE_API_KEY 设置)
+    api_key: "sk-U5RcSKeqA6TnlP8I9RwqijH3QR2C2lg22jXAQ5j5yiHaUHoR"
+
+    # 检查最后N步来判断任务完成情况
+    check_last_n_steps: 3
+
+    # 是否要求有terminate动作才算完成
+    require_termination: true
+
+    # 最低置信度阈值
+    min_confidence: 0.7
+
+    # 最大token数（控制成本）
+    max_tokens: 1000
+
+    # 温度参数
+    temperature: 0.1
+
+  # ==================== 报告配置 ====================
+  reporting:
+    # 是否生成报告
+    enabled: true
+
+    # 报告输出目录
+    output_dir: "data/reports"
+
+    # 是否生成图表（需要matplotlib）
+    generate_plots: false

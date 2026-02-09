@@ -1,0 +1,5 @@
+# OpenClaw MCP 集成额外依赖
+# 基础依赖见项目根目录 requirements.txt
+
+# MCP 协议支持（包含 fastmcp）
+mcp[cli]

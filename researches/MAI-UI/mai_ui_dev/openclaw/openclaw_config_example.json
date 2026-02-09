@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "mai-ui-agent": {
+      "command": "python",
+      "args": ["openclaw/mai_mcp.py"],
+      "env": {
+        "PYTHONPATH": "/Users/hongyizhao/Desktop/CX/MAI-UI-WebUI",
+        "API_BASE_URL": "http://192.168.32.119:7777/v1",
+        "API_KEY": "empty",
+        "MODEL_NAME": "MAI-UI-8B"
+      }
+    }
+  }
+}
