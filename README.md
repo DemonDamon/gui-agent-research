@@ -1,7 +1,7 @@
 # GUI Agent 技术深度调研
 
 > **作者**: Damon Li  
-> **更新日期**: 2026年1月7日
+> **更新日期**: 2026年6月11日
 
 本仓库包含对主流 GUI 智能体（GUI Agent）技术的深度调研报告，涵盖学术论文分析、开源代码解读、技术架构对比等内容。
 
@@ -24,6 +24,11 @@
 | **Droidrun** | Droidrun 社区 | 模块化框架，支持 iOS | 依赖外部 LLM | 任意 VLM | 无需训练 | 零样本 | - |
 | **AppAgent** | 腾讯 | 自主探索学习，知识积累 | 单智能体架构 | GPT-4V | 自主探索生成 | 零样本 | - |
 | **mobile-use** | Minitap AI | 多智能体，跨平台，数据抓取 | 架构较重 | 任意 VLM | 无需训练 | 零样本 | - |
+| **UI-TARS-1.5** | 字节跳动 | 强化学习增强推理，推理时缩放 | 依赖算力资源 | Qwen2-VL | 自建+RL | SFT + RL | 7B |
+| **GUI-R1** | R Luo 等 | 极高数据效率，统一动作空间 | 处于研究阶段 | Qwen2.5-VL | 3K 高质量数据 | GRPO | 3B/7B |
+| **Mobile-Agent-v3.5** | 阿里通义 | 混合数据飞轮，MRPO 算法 | 架构庞大 | GUI-Owl-1.5 | 模拟+云沙箱 | SFT + RL | 2B-235B |
+| **MobileGUI-RL** | Y Shi 等 | 在线环境训练，难度自适应 | 依赖在线交互 | Qwen2.5/GLM-4 | 在线探索合成 | ADAGRPO | 7B/9B |
+| **UI-R1** | Z Lu 等 | 极简数据集训练 (136样本) | 仅验证动作预测 | MLLMs | 136 样本 | RL | 3B/7B |
 
 **注**：**Mobile-Agent-v3** 是一个多智能体**框架**，它使用 **GUI-Owl** 作为其核心**模型**。因此，在选型时，应将两者视为一个整体方案。
 
@@ -52,6 +57,11 @@
 | **Droidrun** | [查看报告](./researches/Droidrun/README.md) | [代码分析](./researches/Droidrun/code-analysis.md) |
 | **AppAgent** | [查看报告](./researches/AppAgent/README.md) | [代码分析](./researches/AppAgent/code-analysis.md) |
 | **mobile-use** | [查看报告](./researches/mobile-use/README.md) | [代码分析](./researches/mobile-use/code-analysis.md) |
+| **UI-TARS-1.5** | [查看报告](./researches/UI-TARS-1.5/README.md) | 待补充 |
+| **GUI-R1** | [查看报告](./researches/GUI-R1/README.md) | 待补充 |
+| **Mobile-Agent-v3.5** | [查看报告](./researches/Mobile-Agent-v3.5/README.md) | 待补充 |
+| **MobileGUI-RL** | [查看报告](./researches/MobileGUI-RL/README.md) | 待补充 |
+| **UI-R1** | [查看报告](./researches/UI-R1/README.md) | 待补充 |
 
 ## 🏗️ 项目结构
 
@@ -70,6 +80,11 @@ gui-agent-research/
 │   ├── Droidrun/               # Droidrun 框架调研
 │   ├── AppAgent/               # AppAgent 框架调研
 │   ├── mobile-use/             # mobile-use 框架调研
+│   ├── UI-TARS-1.5/            # UI-TARS-1.5 模型调研
+│   ├── GUI-R1/                 # GUI-R1 框架调研
+│   ├── Mobile-Agent-v3.5/      # Mobile-Agent-v3.5 框架调研
+│   ├── MobileGUI-RL/           # MobileGUI-RL 框架调研
+│   ├── UI-R1/                  # UI-R1 模型调研
 │   └── ...
 └── presentation/               # 技术演示 PPT
 ```
