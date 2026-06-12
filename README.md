@@ -29,6 +29,7 @@
 | **Mobile-Agent-v3.5** | 阿里通义 | 混合数据飞轮，MRPO 算法 | 架构庞大 | GUI-Owl-1.5 | 模拟+云沙箱 | SFT + RL | 2B-235B |
 | **MobileGUI-RL** | Y Shi 等 | 在线环境训练，难度自适应 | 依赖在线交互 | Qwen2.5/GLM-4 | 在线探索合成 | ADAGRPO | 7B/9B |
 | **UI-R1** | Z Lu 等 | 极简数据集训练 (136样本) | 仅验证动作预测 | MLLMs | 136 样本 | RL | 3B/7B |
+| **ClawGUI** | 浙江大学 | 全栈开源框架，95.8% 复现率 | 2B 模型特定任务强 | Qwen2.5-VL | 自建+在线 RL | GiGPO + PRM | 2B |
 
 **注**：**Mobile-Agent-v3** 是一个多智能体**框架**，它使用 **GUI-Owl** 作为其核心**模型**。因此，在选型时，应将两者视为一个整体方案。
 
@@ -62,6 +63,7 @@
 | **Mobile-Agent-v3.5** | [查看报告](./researches/Mobile-Agent-v3.5/README.md) | 待补充 |
 | **MobileGUI-RL** | [查看报告](./researches/MobileGUI-RL/README.md) | 待补充 |
 | **UI-R1** | [查看报告](./researches/UI-R1/README.md) | 待补充 |
+| **ClawGUI** | [查看报告](./researches/ClawGUI/README.md) | 待补充 |
 
 ## 🏗️ 项目结构
 
@@ -85,6 +87,7 @@ gui-agent-research/
 │   ├── Mobile-Agent-v3.5/      # Mobile-Agent-v3.5 框架调研
 │   ├── MobileGUI-RL/           # MobileGUI-RL 框架调研
 │   ├── UI-R1/                  # UI-R1 模型调研
+│   ├── ClawGUI/                # ClawGUI 全栈框架调研
 │   └── ...
 └── presentation/               # 技术演示 PPT
 ```
